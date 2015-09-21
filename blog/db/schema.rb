@@ -11,10 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150920165420) do
+ActiveRecord::Schema.define(version: 20150921085533) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "hstore"
 
   create_table "amanda_cms_entries", force: :cascade do |t|
     t.string   "type"
@@ -42,12 +43,16 @@ ActiveRecord::Schema.define(version: 20150920165420) do
 
   create_table "amanda_cms_repeaters", force: :cascade do |t|
     t.string   "title"
+    t.integer  "source_entry_id"
     t.integer  "entry_id"
     t.string   "entry_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
   end
 
+  add_index "amanda_cms_repeaters", ["entry_id", "source_entry_id"], name: "index_amanda_cms_repeaters_on_entry_id_and_source_entry_id", unique: true, using: :btree
+  add_index "amanda_cms_repeaters", ["entry_id"], name: "index_amanda_cms_repeaters_on_entry_id", using: :btree
   add_index "amanda_cms_repeaters", ["entry_type"], name: "index_amanda_cms_repeaters_on_entry_type", using: :btree
+  add_index "amanda_cms_repeaters", ["source_entry_id"], name: "index_amanda_cms_repeaters_on_source_entry_id", using: :btree
 
 end

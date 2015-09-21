@@ -1,7 +1,13 @@
 AmandaCms.configure do |config|
-  config.entry_types = %w(Article Slide)
+  # Do not remove this file
+  config.entry_types = ["Article", "Slide"] + AmandaCms::EntryGroup.pluck(:title)
 end
 
-AmandaCms.configuration.entry_types.each do |type|
-  AmandaCms::Entry.define_entry_type(type)
+
+AmandaCms::EntryGroup.all.each do |type|
+  type.define_entry_type
 end
+
+#AmandaCms.configuration.entry_types.each do |type|
+#  AmandaCms::Entry.define_entry_type(type)
+#end
